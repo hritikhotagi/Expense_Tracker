@@ -1,0 +1,72 @@
+.page-content {
+    padding: 20px;
+  }
+  
+  .header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .total-income {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  .expense-overview-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Space between the cards */
+  }
+  
+  .expense-card {
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .expense-details {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .expense-title {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between the icon and title */
+  }
+  
+  .category-icon {
+    color: #4CAF50;
+  }
+  
+  h4 {
+    margin: 0;
+    font-size: 1.2em;
+    color: #333;
+  }
+  
+  p {
+    margin: 5px 0;
+  }
+  
+  strong {
+    font-weight: 600;
+  }
+  
+  @media (max-width: 600px) {
+    .expense-card {
+      padding: 15px;
+    }
+  
+    h4 {
+      font-size: 1em;
+    }
+  }
+  

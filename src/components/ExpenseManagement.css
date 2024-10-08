@@ -1,0 +1,98 @@
+.custom-dropdown {
+    position: relative;
+    cursor: pointer;
+    background: #f1f1f1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    border: 1px solid #ccc;
+    z-index: 1000;
+  }
+  
+  .dropdown-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .dropdown-item:last-child {
+    border-bottom: none;
+  }
+  
+  .dropdown-item:hover {
+    background-color: #f9f9f9;
+  }
+  
+  .dropdown-item input {
+    width: 70%;
+  }
+  
+  .dropdown-item button {
+    margin-left: 10px;
+  }
+  
+  .menu-items{
+    background-color: rgb(254, 255, 248);
+    padding: 10px;
+    border-radius: 8px;
+  }
+
+  .menu-item{
+    padding: 5px;
+    background-color: #FD8B51;
+    border-radius: 4px;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+  }
+
+  .menu-item:hover{
+    background-color: #CB6040;
+  }
+
+  .deleteIcon{
+    float: right;
+    margin-top: 3px;
+    color: #257180;
+  }
+
+.deleteIcon:hover{
+    color: rgb(255, 255, 255);
+}
+
+.expense-card{
+    background-color: #ffffff;
+    border: none;
+
+}
+
+.expense-card h4{
+    margin: 0;
+    font-size: 20px;
+}
+
+.amt{
+    font-size: 17px;
+    font-weight: 600;
+    color: rgb(245, 47, 28);
+}
+
+.amtsrc{
+    color: green;
+}
+
+.deletebtm{
+    margin: 5px;
+}
+
+.editbtm{
+    margin: 5px;
+}

@@ -1,0 +1,130 @@
+.header-container {
+  height: 100%;
+  position: relative;
+  background-color: #211C1D;
+  color: #E0D7C7;
+}
+
+.sidebar-title {
+  padding: 0 0 10px 15px;
+  font-size: 1.1em;
+  font-weight: bold;
+  margin: 0;
+}
+
+.header-container.closed .text {
+  display: none;
+}
+
+.text{
+  margin: 0 15px 0 20px;
+}
+
+.navbar{
+  margin-left: 12px;
+}
+.navbar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.navbar ul li {
+  margin: 20px 0;
+}
+
+.navbar ul li a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #E0D7C7;
+}
+
+.icon {
+  font-size: 1.5em;
+  margin-right: 10px;
+}
+
+/* Toggle button for sidebar */
+.toggle-sidebar {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5em;
+  margin: 0;
+  align-self: flex-end;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toggle-sidebar:hover{
+  margin: 0;
+  background-color: transparent;
+}
+
+/* Profile section */
+.profile-section {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+}
+
+/* Profile menu */
+.profile-menu {
+  position: fixed;
+  bottom: 60px;
+  left: 10px;
+  background-color: white;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
+  padding: 10px;
+  width: 180px;
+  z-index: 1000;
+  text-align: center;
+}
+
+
+.profile-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.profile-details {
+  margin-bottom: 10px;
+  color: black;
+}
+
+.logout-button {
+  background-color: #56453E;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  background-color: #E0D7C7;
+  color: black;
+}
+
+@media (max-width: 768px) {
+  .sidebar-open .sidebar {
+    width: 30%;
+  }
+
+  .sidebar-closed .sidebar {
+    width: 10%;
+  }
+
+  .sidebar-open .main-content {
+    width: 70%;
+  }
+
+  .sidebar-closed .main-content {
+    width: 90%;
+  }
+}

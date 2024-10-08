@@ -1,0 +1,73 @@
+.page-content {
+    padding: 20px;
+  }
+  
+  .dashboard-card-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .dashboard-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    flex: 1;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .dashboard-card h3 {
+    margin: 0;
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+  }
+  
+  .dashboard-card p {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .charts-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-top: 20px;
+  }
+  
+  .chart1, .chart2 {
+    flex: 1;
+  }
+  
+  .chart1 {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .chart2 {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  
+  .chart1 h4, .chart2 h4 {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  
+  @media (max-width: 768px) {
+    .dashboard-card-container {
+      flex-direction: column;
+    }
+  
+    .charts-container {
+      flex-direction: column;
+    }
+  
+    .chart1 {
+      max-width: 100%; /* Allow the pie chart to take full width on smaller screens */
+    }
+  }
+  

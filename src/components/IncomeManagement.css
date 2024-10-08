@@ -1,0 +1,105 @@
+.page-content {
+  padding: 0 20px 0 20px;
+  }
+  
+  form {
+    width: 50%;
+    margin-bottom: 20px;
+  }
+  
+  form div {
+    margin-bottom: 10px;
+  }
+  
+  form label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  form input{
+    width: 97.5%;
+    padding: 10px;
+    margin: 4px 0;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  }
+  
+  form select {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    width: 100%;
+    padding: 10px;
+    margin: 4px 0;
+    border: none;
+    border-radius: 10px;
+  }
+  
+  button {
+    padding: 10px 15px;
+    background-color: #FD8B51;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  button:hover {
+    background-color: #CB6040;
+  }
+  
+  /* Income cards */
+  .income-cards {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .income-card {
+    background-color: #f5f5f5;
+    padding: 15px;
+    margin: 10px;
+    width: 200px;
+    border-radius: 4px;
+  }
+  
+  .income-card h3{
+    margin: 0;
+  }
+
+  .lock-info {
+    margin-top: 10px;
+    font-size: 12px;
+    color: #666;
+  }
+
+.income-card h5{
+  font-size: 14px;
+  color: #CB6040;
+}
+
+.side p{
+  margin: 10px 0 0 0;
+  font-size: 22px;
+  color: rgb(5, 182, 5);
+  font-weight: 600;
+}
+
+.lock-icon {
+  float: right;
+  position: relative;
+
+}
+
+.lock-button {
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.lock-button:hover {
+  color: #FD8B51;
+}
+
+.buttons button{
+  margin-right: 20px;
+}
