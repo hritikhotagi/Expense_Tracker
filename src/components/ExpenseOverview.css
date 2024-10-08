@@ -29,6 +29,7 @@
     display: flex;
     flex-direction: column;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
   }
   
   .expense-details {
@@ -40,13 +41,14 @@
     display: flex;
     align-items: center;
     gap: 10px; /* Space between the icon and title */
+    justify-content: space-between;
   }
   
   .category-icon {
     color: #4CAF50;
   }
   
-  h4 {
+  h2 {
     margin: 0;
     font-size: 1.2em;
     color: #333;
@@ -70,3 +72,7 @@
     }
   }
   
+  .amttran{
+    font-weight: 700;
+    font-size: 18px;
+  }

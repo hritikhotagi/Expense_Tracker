@@ -63,7 +63,6 @@ export const getIncomes = async (createdBy) => {
   
 
 export const addIncome = async (incomeData) => {
-    console.log(incomeData)
   try {
     const response = await axios.post(`${API_BASE_URL}/api/income/add`, incomeData);
     return response.data;
@@ -114,7 +113,6 @@ export const deleteIncome = async (incomeId) => {
 };
 
 export const getExpenses = async (createdBy) => {
-  console.log("aaaa\n",createdBy)
     try {
       const response = await axios.post(`${API_BASE_URL}/api/expenses`, { createdBy });
       return response.data;
@@ -126,7 +124,6 @@ export const getExpenses = async (createdBy) => {
   
   // Create a new expense
   export const addExpense = async (expenseData) => {
- 
     try {
       const response = await axios.post(`${API_BASE_URL}/api/expenses/add`, expenseData);
       return response.data;

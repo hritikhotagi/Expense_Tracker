@@ -34,7 +34,6 @@ const ExpenseManagement = () => {
 
   useEffect(() => {
     if (user) {
-      console.log("Current user ID:", user.sub);
       fetchCategories(user.sub);
       fetchIncomes(user.sub);
       fetchExpenses(user.sub);
@@ -69,6 +68,12 @@ const ExpenseManagement = () => {
     } catch (error) {
       console.error('Error fetching expenses:', error);
     }
+  };
+
+  // Helper function to check if income is locked
+  const isIncomeLocked = (incomeId) => {
+    const income = incomes.find((inc) => inc._id === incomeId);
+    return income ? income.isLocked : false;
   };
 
   // Add a new category
@@ -110,12 +115,19 @@ const ExpenseManagement = () => {
     e.preventDefault();
     const { title, amount, category, date, linkedIncome } = expenseData;
 
+    // Check if the selected income is locked
+    if (isIncomeLocked(linkedIncome)) {
+      setMessage('Cannot deduct from this income as it is locked.');
+      return;
+    }
+    const formattedDate = date ? `${date}T00:00:00Z` : '';
+
     // Ensure amount is passed as a number, not as a string
     const expenseDataToSend = {
       title,
       amount: Number(amount), // Convert amount to number
       category, // categoryId passed as category (ID)
-      date,
+      date: formattedDate,
       linkedIncome,
       createdBy: user.sub, // Add createdBy field with the user ID
     };
@@ -137,7 +149,11 @@ const ExpenseManagement = () => {
       fetchExpenses(user.sub);
       fetchIncomes(user.sub); // Refresh incomes after deduction
     } catch (error) {
-      console.error('Error saving expense:', error);
+      if (error.message === 'Not enough income to cover the expense') {
+        setMessage('Insufficient funds. Please check your available income.');
+      } else {
+        setMessage(`Error saving expense: ${error.message}`);
+      }
     }
   };
 
@@ -175,14 +191,14 @@ const ExpenseManagement = () => {
 
   // Helper function to find category name by ID
   const getCategoryNameById = (categoryId) => {
-    const category = categories.find(cat => cat._id === categoryId);
+    const category = categories.find((cat) => cat._id === categoryId);
     return category ? category.name : 'Unknown Category';
   };
 
-  // Helper function to find linked income amount by ID
-  const getIncomeAmountById = (incomeId) => {
-    const income = incomes.find(inc => inc._id === incomeId);
-    return income ? `Rs. ${income.amount}` : 'Unknown Income';
+  // Helper function to find linked income month by ID
+  const getIncomeMonthById = (incomeId) => {
+    const income = incomes.find((inc) => inc._id === incomeId);
+    return income ? income.month : 'Unknown Income';
   };
 
   // Format date to "day month year"
@@ -245,16 +261,6 @@ const ExpenseManagement = () => {
             </button>
             {isCategoryMenuOpen && (
               <div className="category-menu">
-                <div className="menu-items">
-                  {categories.map((cat) => (
-                    <div key={cat._id} onClick={() => handleSelectCategory(cat._id, cat.name)} className="menu-item">
-                      <span>{cat.name}</span>
-                      <FontAwesomeIcon className='deleteIcon' icon={faTrash} onClick={(e) => handleDeleteCategory(cat._id, e)} />
-                    </div>
-                  ))}
-                </div>
-
-                {/* Add Category inside the menu */}
                 <div className="menu-header">
                   <input
                     type="text"
@@ -265,6 +271,14 @@ const ExpenseManagement = () => {
                   <button onClick={handleAddCategory}>
                     <FontAwesomeIcon icon={faPlus} /> Add
                   </button>
+                </div>
+                <div className="menu-items">
+                  {categories.map((cat) => (
+                    <div key={cat._id} onClick={() => handleSelectCategory(cat._id, cat.name)} className="menu-item">
+                      <span>{cat.name}</span>
+                      <FontAwesomeIcon className='deleteIcon' icon={faTrash} onClick={(e) => handleDeleteCategory(cat._id, e)} />
+                    </div>
+                  ))}
                 </div>
               </div>
             )}
@@ -290,7 +304,9 @@ const ExpenseManagement = () => {
           >
             <option value="">Select Income</option>
             {incomes.map((inc) => (
-              <option key={inc._id} value={inc._id}>{inc.month} - Rs. {inc.amount}</option>
+              <option key={inc._id} value={inc._id}>
+                {inc.month} - Rs. {inc.amount} {inc.isLocked ? '(Locked)' : ''}
+              </option>
             ))}
           </select>
         </div>
@@ -298,7 +314,7 @@ const ExpenseManagement = () => {
         <button type="submit">{editExpenseId ? 'Update Expense' : 'Add Expense'}</button>
       </form>
 
-      {message && <p>{message}</p>}
+      {message && <p className='errorMsg'>{message}</p>}
 
       {/* Display expenses in card format */}
       <h3>Your Expenses</h3>
@@ -308,9 +324,9 @@ const ExpenseManagement = () => {
             <h4>{exp.title}</h4>
             <p className='amt'>Rs. {exp.amount}</p>
             <p><strong>Category:</strong> {getCategoryNameById(exp.category)}</p>
-            <p><strong> {formatDate(exp.date)}</strong></p>
-            <p className='amtsrc'><strong>Source Income:</strong> {getIncomeAmountById(exp.linkedIncome)}</p>
-
+            <p><strong>{formatDate(exp.date)}</strong></p>
+            <p className='amtsrc'><strong>Linked Income Month:</strong> {getIncomeMonthById(exp.linkedIncome)}</p>
+            
             <button className='editbtm'onClick={() => handleEditExpense(exp)}>Edit</button>
             <button className='deletebtm' onClick={() => handleDeleteExpense(exp._id)}>Delete</button>
           </div>

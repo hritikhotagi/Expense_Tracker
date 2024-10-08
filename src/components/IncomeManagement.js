@@ -55,8 +55,12 @@ const IncomeManagement = () => {
       setMessage(`Income added for ${month}`);
       fetchIncomes(user.sub); // Refresh the list of incomes
     } catch (error) {
-      console.error('Error adding income:', error);
-      setMessage('Error adding income');
+      if (error.response && error.response.data.message === "This month's income is locked and cannot be updated.") {
+        setMessage("This month's income is locked and cannot be updated.");
+      } else {
+        console.error('Error adding income:', error);
+        setMessage('Error adding income');
+      }
     }
 
     // Reset the form fields
@@ -161,6 +165,9 @@ const IncomeManagement = () => {
           {editIncomeId ? 'Update Income' : 'Add Income'}
         </button>
       </form>
+
+      {message && <p className='errorMsg'>{message}</p>}
+
 
       {/* Display incomes in cards */}
       <h3>Your Incomes</h3>

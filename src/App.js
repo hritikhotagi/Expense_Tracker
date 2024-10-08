@@ -14,7 +14,6 @@ function App() {
   const [activeNav, setActiveNav] = useState('/dashboard');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-  console.log(user)
   useEffect(() => {
     if (!isAuthenticated && !isLoading) {
       loginWithRedirect();

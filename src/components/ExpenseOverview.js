@@ -83,10 +83,27 @@ const ExpenseOverview = () => {
     return category ? category.name : 'Unknown Category';
   };
 
-  // Helper function to get income amount by ID
-  const getIncomeAmountById = (incomeId) => {
+  // Helper function to get the total before and after an expense was deducted
+  const getLinkedIncomeDetails = (incomeId, expenseId) => {
     const income = incomes.find(inc => inc._id === incomeId);
-    return income ? `Rs. ${income.amount}` : 'Unknown Income';
+    if (!income) return { remainingBalance: 'Unknown Income', totalBeforeExpense: 'Unknown' };
+
+    // Get all expenses linked to the income
+    const linkedExpenses = expenses.filter(exp => exp.linkedIncome === incomeId);
+
+    // Initialize running balance with the income amount
+    let runningBalance = income.amount;
+    let totalBeforeExpense = runningBalance;
+
+    for (const exp of linkedExpenses) {
+      if (exp._id === expenseId) break; // Stop when we reach the current expense
+      runningBalance -= exp.amount; // Subtract each prior expense
+    }
+
+    totalBeforeExpense = runningBalance;
+    runningBalance -= linkedExpenses.find(exp => exp._id === expenseId).amount; // Subtract current expense for the remaining balance
+
+    return { remainingBalance: runningBalance, totalBeforeExpense };
   };
 
   return (
@@ -102,19 +119,29 @@ const ExpenseOverview = () => {
         {expenses.length === 0 ? (
           <p>No expenses available for this month.</p>
         ) : (
-          expenses.map((exp) => (
-            <div key={exp._id} className="expense-card">
-              <div className="expense-details">
-                <div className="expense-title">
-                  <h4>{exp.title}</h4>
+          expenses
+            .slice() // Clone the array
+            .reverse() // Reverse the array to display latest expenses first
+            .map((exp) => {
+              const { remainingBalance, totalBeforeExpense } = getLinkedIncomeDetails(exp.linkedIncome, exp._id);
+
+              return (
+                <div key={exp._id} className="expense-card">
+                  <div className="expense-details">
+                    <div className="expense-title">
+                      <h2>{exp.title}</h2>
+                      <p>{formatDate(exp.date)}</p>
+                      <p className="total-before-expense">Total before expense: Rs. {totalBeforeExpense}</p> {/* Display total before expense */}
+                      <span className="remaining-balance">Balance: Rs. {remainingBalance}</span>
+                      <p className='amttran'>
+                        Rs.{exp.amount}
+                      </p>
+                    </div>
+                    <p><strong>Category:</strong> {getCategoryNameById(exp.category)}</p>
+                  </div>
                 </div>
-                <p><strong>Amount:</strong> Rs. {exp.amount}</p>
-                <p><strong>Category:</strong> {getCategoryNameById(exp.category)}</p>
-                <p><strong>Date:</strong> {formatDate(exp.date)}</p>
-                <p><strong>Source Income:</strong> {getIncomeAmountById(exp.linkedIncome)}</p>
-              </div>
-            </div>
-          ))
+              );
+            })
         )}
       </div>
     </div>

@@ -71,3 +71,16 @@
     }
   }
   
+
+  .month-filter {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .month-filter select {
+    padding: 5px 10px;
+    margin-left: 10px;
+    font-size: 1rem;
+  }
+  

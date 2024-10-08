@@ -16,6 +16,9 @@ const Dashboard = () => {
   const [totalIncome, setTotalIncome] = useState(0);
   const [totalExpenses, setTotalExpenses] = useState(0);
   const [remainingSavings, setRemainingSavings] = useState(0);
+  const [selectedMonth, setSelectedMonth] = useState(new Date().toLocaleString('default', { month: 'long' })); // Default to current month
+
+  const months = ['All', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
   useEffect(() => {
     if (user) {
@@ -39,6 +42,7 @@ const Dashboard = () => {
     }
   };
 
+  // Calculate total income as sum of incomes and expenses, and total expenses
   const calculateTotals = (incomeData, expenseData) => {
     const totalIncome = incomeData.reduce((acc, income) => acc + income.amount, 0) + expenseData.reduce((acc, expense) => acc + expense.amount, 0);
     const totalExpenses = expenseData.reduce((acc, expense) => acc + expense.amount, 0);
@@ -49,16 +53,34 @@ const Dashboard = () => {
     setRemainingSavings(remainingSavings);
   };
 
-  const pieChartData = {
-    labels: ['Income', 'Expenses'],
-    datasets: [
-      {
-        label: 'Income vs Expenses',
-        data: [totalIncome, totalExpenses],
-        backgroundColor: ['#4CAF50', '#FF6384'], // Green for income, Red for expenses
-        hoverBackgroundColor: ['#45a049', '#FF6B81'],
-      },
-    ],
+  // Get filtered data for the selected month
+  const getFilteredIncomesAndExpenses = (selectedMonth) => {
+    const filteredIncomes = incomes.filter(income => income.month === selectedMonth);
+    const filteredExpenses = expenses.filter(expense => new Date(expense.date).toLocaleString('default', { month: 'long' }) === selectedMonth);
+
+    const totalIncomeForMonth = filteredIncomes.reduce((acc, income) => acc + income.amount, 0);
+    const totalExpensesForMonth = filteredExpenses.reduce((acc, expense) => acc + expense.amount, 0);
+
+    return { totalIncomeForMonth, totalExpensesForMonth };
+  };
+
+  // Pie Chart Data
+  const pieChartData = ({ totalIncomeForMonth, totalExpensesForMonth }) => {
+    const expensePercentage = totalIncomeForMonth ? ((totalExpensesForMonth / totalIncomeForMonth) * 100).toFixed(2) : 0;
+    const incomePercentage = 100 - expensePercentage;
+
+    return {
+      labels: ['Income', 'Expenses'],
+      datasets: [
+        {
+          label: 'Income vs Expenses',
+          data: [totalIncomeForMonth, totalExpensesForMonth],
+          backgroundColor: ['#4CAF50', '#FF6384'], // Green for income, Red for expenses
+          hoverBackgroundColor: ['#45a049', '#FF6B81'],
+        },
+      ],
+      percentageLabels: [incomePercentage, expensePercentage], // Percentage labels
+    };
   };
 
   const getCategoryNameById = (categoryId) => {
@@ -66,8 +88,12 @@ const Dashboard = () => {
     return category ? category.name : 'Unknown Category';
   };
 
-  const getExpensesByCategory = () => {
-    const categoriesMap = expenses.reduce((acc, expense) => {
+  const getExpensesByCategory = (month) => {
+    const filteredExpenses = month === 'All'
+      ? expenses
+      : expenses.filter(exp => new Date(exp.date).toLocaleString('default', { month: 'long' }) === month);
+
+    const categoriesMap = filteredExpenses.reduce((acc, expense) => {
       const month = new Date(expense.date).toLocaleString('default', { month: 'long' });
       const categoryName = getCategoryNameById(expense.category); // Use category name instead of ID
 
@@ -77,12 +103,12 @@ const Dashboard = () => {
       return acc;
     }, {});
 
-    const categoryLabels = [...new Set(expenses.map(exp => getCategoryNameById(exp.category)))]; // Unique category names
+    const categoryLabels = [...new Set(filteredExpenses.map(exp => getCategoryNameById(exp.category)))]; // Unique category names
 
     return { categoriesMap, categoryLabels };
   };
 
-  const { categoriesMap, categoryLabels } = getExpensesByCategory();
+  const { categoriesMap, categoryLabels } = getExpensesByCategory(selectedMonth);
 
   const barChartData = {
     labels: Object.keys(categoriesMap), // Months
@@ -102,10 +128,12 @@ const Dashboard = () => {
     },
   };
 
+  const { totalIncomeForMonth, totalExpensesForMonth } = getFilteredIncomesAndExpenses(selectedMonth);
+
   return (
     <div className="page-content">
       <h2>Financial Dashboard</h2>
-      
+
       {/* Card section for totals */}
       <div className="dashboard-card-container">
         <div className="dashboard-card">
@@ -125,7 +153,16 @@ const Dashboard = () => {
       <div className="charts-container">
         <div className="chart1">
           <h4>Income vs Expenses</h4>
-          <Pie data={pieChartData} />
+          <div className="month-filter">
+            <label htmlFor="month-select">Filter by Month:</label>
+            <select id="month-select" value={selectedMonth} onChange={(e) => setSelectedMonth(e.target.value)}>
+              {months.map((month) => (
+                <option key={month} value={month}>{month}</option>
+              ))}
+            </select>
+          </div>
+          <Pie data={pieChartData({ totalIncomeForMonth, totalExpensesForMonth })} />
+          <p>{`Expense: ${((totalExpensesForMonth / totalIncomeForMonth) * 100).toFixed(2)}% of Income`}</p>
         </div>
 
         <div className="chart2">

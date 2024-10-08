@@ -21,7 +21,7 @@
 }
 
 .navbar{
-  margin-left: 12px;
+  margin-left: 12px 0 0 12px;
 }
 .navbar ul {
   list-style: none;
@@ -41,7 +41,7 @@
 
 .icon {
   font-size: 1.5em;
-  margin-right: 10px;
+  /* margin-right: 10px; */
 }
 
 /* Toggle button for sidebar */
@@ -127,4 +127,25 @@
   .sidebar-closed .main-content {
     width: 90%;
   }
+}
+
+/* Highlight the active page link in the sidebar */
+.navbar ul li.active a {
+  background-color: #515151;
+  color: #ffffff;
+  border-radius: 5px;
+  padding: 10px 15px;
+}
+
+.navbar ul li a:hover {
+  background-color: #44403c;
+  color: #ffffff;
+}
+
+.navbar ul li a {
+  padding: 10px 15px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.3s, color 0.3s;
 }
